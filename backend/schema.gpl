@@ -8,6 +8,11 @@ type CreateUserDTO {
   password: String!
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 input InputUser {
   email: String!
   password: String!
@@ -15,9 +20,15 @@ input InputUser {
 }
 
 type Mutation {
-  createUser(input: InputUser!): CreateUserDTO!
+  createManager(input: InputUser!): CreateUserDTO!
 }
 
 type Query {
-  users: [CreateUserDTO!]!
+  profiles: [ShowUserDTO!]!
+}
+
+type ShowUserDTO {
+  email: String!
+  role: String!
+  registeredAt: DateTime!
 }

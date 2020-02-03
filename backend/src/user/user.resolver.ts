@@ -1,6 +1,9 @@
+import { map } from 'ramda';
+
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { CreateUserDTO } from './dto/create-user.dto';
+import { ShowUserDTO } from './dto/show-user.dto';
 import { InputUser } from './input/user.input';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -9,16 +12,28 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => [CreateUserDTO])
-  async users() {
-    return this.userService.getUsers();
+  @Query(() => [ShowUserDTO])
+  async profiles(): Promise<ShowUserDTO[]> {
+    const userEntities = await this.userService.getUsers();
+    return map(
+      entity => ({
+        email: entity.email,
+        role: entity.role?.name || 'oops',
+        registeredAt: entity.createdAt,
+      }),
+      userEntities,
+    );
   }
 
   @Mutation(() => CreateUserDTO)
-  async createUser(@Args('input') input: InputUser) {
+  async createManager(@Args('input') input: InputUser) {
     if (input.password !== input.confirmPassword) {
+      // TODO: move validation to entity
       throw new Error("Passwords don't matched");
     }
-    return this.userService.createUser(input);
+    const user = await new UserEntity();
+    user.email = input.email;
+    user.password = input.password;
+    return this.userService.createManager(input);
   }
 }
