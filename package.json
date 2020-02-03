@@ -1,0 +1,19 @@
+{
+  "name": "welcome-wagon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:isaldin/welcome-wagon.git",
+  "author": "ilya <saldin.iliya@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "backend:dev": "yarn workspace backend start"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^6.14.1"
+  }
+}
