@@ -13,6 +13,11 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input InputCredentials {
+  email: String!
+  password: String!
+}
+
 input InputUser {
   email: String!
   password: String!
@@ -24,6 +29,7 @@ type Mutation {
 }
 
 type Query {
+  login(credentials: InputCredentials!): String
   profiles: [ShowUserDTO!]!
 }
 

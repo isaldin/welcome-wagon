@@ -9,7 +9,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', select: false })
+  @Column({ type: 'varchar' })
   password: string;
 
   @BeforeInsert()
