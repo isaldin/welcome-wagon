@@ -60,4 +60,12 @@ export class JwtService {
 
     return saveJwt.token;
   }
+
+  async getUserWithJwt(jwt: string): Promise<UserEntity | null> {
+    const jwtEntity = await this.jwtRepository.findOne({ token: jwt });
+    if (jwtEntity && isTokenValid(jwtEntity.token)) {
+      return jwtEntity.user;
+    }
+    return null;
+  }
 }

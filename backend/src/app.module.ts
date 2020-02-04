@@ -1,19 +1,30 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import typeormConfig from './config/typeorm.config';
 import { JwtModule } from './jwt/jwt.module';
+import { AuthMiddleware } from './middlewares/AuthMiddleware';
 import { UserModule } from './user/user.module';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeormConfig.getTypeOrmConfig()),
-    GraphQLModule.forRoot({ autoSchemaFile: 'schema.gpl' }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'schema.gpl',
+      context: ({ req }) => ({ req }),
+    }),
     UserModule,
     JwtModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'graphql', method: RequestMethod.POST });
+  }
+}

@@ -8,7 +8,7 @@ export class JwtEntity extends BaseEntity {
   @Column({ name: 'token' })
   token: string;
 
-  @OneToOne(_type => UserEntity)
+  @OneToOne(_type => UserEntity, { eager: true })
   @JoinColumn()
   user: UserEntity;
 }
