@@ -18,14 +18,15 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker:dev": "docker-compose -f docker/compose.yml up -d",
+    "docker:dev": "docker-compose -f docker/compose.yml up",
     "dev": "yarn docker:dev && yarn start:dev",
     "typeorm": "ts-node -r tsconfig-paths/register ../node_modules/typeorm/cli.js --config ormconfig.ts",
     "migration:generate": "yarn typeorm migration:generate -n",
     "migration:create": "yarn typeorm migration:create -n",
     "migration:run": "yarn typeorm migration:run",
     "seed:create": "yarn typeorm migration:create -c seed -n",
-    "seed:run": "yarn typeorm migration:run -c seed"
+    "seed:run": "yarn typeorm migration:run -c seed",
+    "db:prepare": "yarn migration:run && yarn seed:run"
   },
   "dependencies": {
     "@nestjs/common": "^6.10.14",
@@ -35,6 +36,7 @@
     "@nestjs/typeorm": "^6.2.0",
     "apollo-server-express": "^2.9.16",
     "bcrypt": "^3.0.7",
+    "class-transformer": "^0.2.3",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.6",

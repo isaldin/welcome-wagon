@@ -11,7 +11,9 @@
     "frontend"
   ],
   "scripts": {
-    "backend:dev": "yarn workspace backend dev"
+    "backend:docker": "(cp backend/.env.docker backend/.env || true) && yarn workspace backend docker:dev",
+    "backend:db": "yarn workspace backend db:prepare",
+    "backend:dev": "yarn workspace backend start:dev"
   },
   "devDependencies": {
     "@nestjs/cli": "^6.14.1"

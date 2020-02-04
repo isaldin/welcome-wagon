@@ -19,8 +19,12 @@ export class UserService {
     //
   }
 
+  async getUser(id: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ id });
+  }
+
   async createManager(data: CreateUserDTO): Promise<UserEntity> {
-    let user = new UserEntity();
+    const user = new UserEntity();
     user.email = data.email;
     user.password = data.password;
     user.role = await this.rolesRepository.findOneOrFail({ name: 'manager' });

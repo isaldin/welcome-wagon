@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import typeormConfig from './config/typeorm.config';
 import { JwtModule } from './jwt/jwt.module';
 import { AuthMiddleware } from './middlewares/AuthMiddleware';
+import { SurveyrModule } from './survey/survey.module';
 import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -17,6 +17,7 @@ import { UserService } from './user/user.service';
     }),
     UserModule,
     JwtModule,
+    SurveyrModule,
   ],
   controllers: [],
   providers: [],
