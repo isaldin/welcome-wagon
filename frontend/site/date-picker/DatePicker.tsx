@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import React, { useEffect, useRef, useState } from 'react';
+import DayPicker from 'react-day-picker';
 
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import DayPicker from 'react-day-picker'
-
-import { localeProps } from './locale'
-import TextInput from './TextInput'
-import { AbsoluteWrapper, RelativeWrapper } from './ui'
+import { localeProps } from './locale';
+import TextInput from './TextInput';
+import { AbsoluteWrapper, RelativeWrapper } from './ui';
 
 export type DatePickerProps = Partial<
   React.ComponentProps<typeof DayPicker>

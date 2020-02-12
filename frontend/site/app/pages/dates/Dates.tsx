@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import styled from '@emotion/styled'
-import DatePicker from './date-picker'
-import { Flex } from '../../ui/flex'
+import React, { useState } from 'react';
+
+import styled from '@emotion/styled';
+import DatePicker from '@ui/datepicker';
+import { Flex } from '@ui/flex';
 
 const PrettyWrapper = styled(Flex)`
   padding: 20px;
