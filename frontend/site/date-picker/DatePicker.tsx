@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import React, { createRef, useEffect, useRef, useState } from 'react';
+import DayPicker from 'react-day-picker';
 
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import DayPicker from 'react-day-picker'
-
-import { localeProps } from './locale'
-import TextInput from './TextInput'
-import { AbsoluteWrapper, RelativeWrapper } from './ui'
+import { localeProps } from './locale';
+import TextInput from './TextInput';
+import { AbsoluteWrapper, RelativeWrapper } from './ui';
 
 export type DatePickerProps = Partial<
   React.ComponentProps<typeof DayPicker>
@@ -45,6 +44,28 @@ const DatePicker = ({
   const [isToggled, setToggled] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>()
+  const dayPickerRef = useRef<DayPicker>()
+
+  const handleOutsideClick = event => {
+    if (
+      dayPickerRef?.current?.dayPicker?.contains &&
+      dayPickerRef?.current?.dayPicker?.contains(event.target)
+    ) {
+      // dayPicker will blur input and close himself
+      return
+    }
+
+    setToggled(false)
+    inputRef.current.blur()
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  })
 
   useEffect(() => {
     if (value) {
@@ -65,10 +86,6 @@ const DatePicker = ({
     }
   }
 
-  const onBlurred = () => {
-    setToggled(false)
-  }
-
   const onOverlayFocused = () => {
     inputRef.current.focus()
   }
@@ -76,6 +93,7 @@ const DatePicker = ({
   const preDateChanged = (date: Date | undefined) => {
     onDateChanged(date)
     setToggled(false)
+    inputRef.current.blur()
   }
 
   return (
@@ -84,7 +102,6 @@ const DatePicker = ({
         {...inputProps}
         inputRef={inputRef}
         onFocus={() => setToggled(true)}
-        onBlur={onBlurred}
         onChange={onInputChanged}
         value={inputDate || ''}
         placeholder={dateFormatRu}
@@ -92,11 +109,12 @@ const DatePicker = ({
       <AbsoluteWrapper tabIndex={0} onFocus={onOverlayFocused}>
         {isToggled ? (
           <DayPicker
+            ref={dayPickerRef}
             fromMonth={today}
             selectedDays={[value].filter(d => !!d)}
             onDayClick={preDateChanged}
             {...localeProps()}
-            {...dateProps as React.ComponentProps<typeof DayPicker>}
+            {...(dateProps as React.ComponentProps<typeof DayPicker>)}
           />
         ) : null}
       </AbsoluteWrapper>

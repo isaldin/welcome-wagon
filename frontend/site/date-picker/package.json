@@ -1,0 +1,10 @@
+{
+  "name": "@ui/datepicker",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "main": "index.ts",
+  "dependencies": {
+    "react": "^16.8.1"
+  }
+}
